@@ -14,7 +14,7 @@ interface IConfigurable {
     event Filed(bytes32 file, bytes value);
 
     /// @notice Files `file` with value `value`.
-    /// @param file The file.
+    /// @param file_ The file.
     /// @param value The value to file.
-    function file(bytes32 file, bytes calldata value) external;
+    function file(bytes32 file_, bytes calldata value) external;
 }
