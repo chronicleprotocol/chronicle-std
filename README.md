@@ -19,7 +19,7 @@ proxy
 
 Install module via Foundry:
 ```bash
-$ forge install chronicleprotocol/chronicle-std
+$ forge install chronicleprotocol/chronicle-std@v0.1
 ```
 
 ## Contributing
