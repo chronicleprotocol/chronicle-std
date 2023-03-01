@@ -17,7 +17,7 @@ import {IConfigurable} from "./IConfigurable.sol";
  *      is not configurable and `InvalidValueFiled(bytes32,bytes)` if given
  *      value is invalid for given file.
  *
- *      The function MUST emit the `Filed(bytes32,bytes)` event.
+ *      The function MUST emit the `Filed(address,bytes32,bytes)` event.
  *
  *      A contract inheriting from `Configurable` SHOULD only be configurable
  *      via the provided `file(bytes32,bytes)` function.
@@ -34,7 +34,7 @@ abstract contract Configurable is IConfigurable {
     ///     else revert InvalidFile(file_);
     ///     // forgefmt: disable-end
     ///
-    ///     emit Filed(file_, value);
+    ///     emit Filed(msg.sender, file_, value);
     /// }
     /// ```
     ///
@@ -49,7 +49,7 @@ abstract contract Configurable is IConfigurable {
     ///         revert InvalidFile(file_);
     ///     }
     ///
-    ///     emit Filed(file_, value);
+    ///     emit Filed(msg.sender, file_, value);
     /// }
     /// ```
     function file(bytes32 file_, bytes calldata /*value*/ )
