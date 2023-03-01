@@ -29,7 +29,7 @@ The project uses the Foundry toolchain. You can find installation instructions [
 Setup:
 ```bash
 $ git clone https://github.com/chronicleprotocol/chronicle-std
-$ cd auth/
+$ cd chronicle-std/
 $ forge install
 ```
 
