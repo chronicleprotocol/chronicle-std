@@ -9,9 +9,10 @@ interface IConfigurable {
     error InvalidValueFiled(bytes32 file, bytes value);
 
     /// @notice Emitted when value filed.
+    /// @param caller The caller's address.
     /// @param file The file.
     /// @param value The value filed.
-    event Filed(bytes32 file, bytes value);
+    event Filed(address indexed caller, bytes32 file, bytes value);
 
     /// @notice Files `file` with value `value`.
     /// @param file_ The file.
