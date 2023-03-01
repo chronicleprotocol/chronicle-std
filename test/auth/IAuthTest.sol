@@ -65,13 +65,21 @@ abstract contract IAuthTest is Test {
 
     function test_rely_isAuthProtected() public {
         vm.prank(address(0xbeef));
-        vm.expectRevert(IAuth.NotAuthorized.selector);
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IAuth.NotAuthorized.selector, address(0xbeef)
+            )
+        );
         auth.rely(address(0));
     }
 
     function test_deny_isAuthProtected() public {
         vm.prank(address(0xbeef));
-        vm.expectRevert(IAuth.NotAuthorized.selector);
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IAuth.NotAuthorized.selector, address(0xbeef)
+            )
+        );
         auth.deny(address(0));
     }
 }

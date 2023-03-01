@@ -40,7 +40,7 @@ abstract contract Auth is IAuth {
 
     /// @dev Ensures caller is auth'ed.
     modifier auth() {
-        if (_wards[msg.sender] == 0) revert NotAuthorized();
+        if (_wards[msg.sender] == 0) revert NotAuthorized(msg.sender);
         _;
     }
 
@@ -48,8 +48,8 @@ abstract contract Auth is IAuth {
         _wards[msg.sender] = 1;
         _wardsTouched.push(msg.sender);
 
-        // NOTE: Using address(0) as caller to keep invariant that no address
-        //       can grant itself auth.
+        // Note to use address(0) as caller to keep invariant that no address
+        // can grant itself auth.
         emit AuthGranted(address(0), msg.sender);
     }
 

@@ -3,17 +3,18 @@ pragma solidity ^0.8.4;
 
 interface IAuth {
     /// @notice Thrown by protected function if caller not auth'ed.
-    error NotAuthorized();
+    /// @param caller The caller's address.
+    error NotAuthorized(address caller);
 
     /// @notice Emitted when auth granted to address.
-    /// @param by The address granted auth.
-    /// @param to The address auth got granted to.
-    event AuthGranted(address indexed by, address indexed to);
+    /// @param caller The caller's address.
+    /// @param who The address auth got granted to.
+    event AuthGranted(address indexed caller, address indexed who);
 
     /// @notice Emitted when auth renounced from address.
-    /// @param by The address renounced auth.
-    /// @param to The address auth got renounced from.
-    event AuthRenounced(address indexed by, address indexed to);
+    /// @param caller The caller's address.
+    /// @param who The address auth got renounced from.
+    event AuthRenounced(address indexed caller, address indexed who);
 
     /// @notice Grants address `who` auth.
     /// @dev Only callable by auth'ed address.
