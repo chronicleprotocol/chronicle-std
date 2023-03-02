@@ -15,10 +15,12 @@ import {IAuth} from "src/auth/IAuth.sol";
  * @dev Config Definition:
  *      ```json
  *      {
- *          "legacy": bool,
- *          "authed": [
- *              "0x000000000000000000000000000000000000cafe", ...
- *          ]
+ *          "IAuth": {
+ *              "legacy": bool,
+ *              "authed": [
+ *                  "0x000000000000000000000000000000000000cafe", ...
+ *              ]
+ *          }
  *      }
  *      ```
  */
@@ -29,7 +31,7 @@ contract IAuthIntegrationTest is Test {
     string config;
 
     modifier notLegacy() {
-        if (!config.readBool(".legacy")) {
+        if (!config.readBool(".IAuth.legacy")) {
             _;
         }
     }
@@ -50,7 +52,7 @@ contract IAuthIntegrationTest is Test {
     /// @dev Checks that each address expected to be auth'ed is actually
     ///      auth'ed.
     function run_authed_containsAllExpectedAddresses() internal {
-        address[] memory expected = config.readAddressArray(".authed");
+        address[] memory expected = config.readAddressArray(".IAuth.authed");
 
         // Check that each expected address is auth'ed.
         for (uint i; i < expected.length; i++) {
@@ -68,7 +70,7 @@ contract IAuthIntegrationTest is Test {
     ///      auth'ed.
     /// @dev Only non-legacy versions supported!
     function run_authed_onlyExpectedAddressesAreAuthed() internal notLegacy {
-        address[] memory expected = config.readAddressArray(".authed");
+        address[] memory expected = config.readAddressArray(".IAuth.authed");
         address[] memory actual = auth.authed();
 
         for (uint i; i < actual.length; i++) {
