@@ -2,84 +2,107 @@
 pragma solidity ^0.8.4;
 
 import {Test} from "forge-std/Test.sol";
+import {stdJson} from "forge-std/StdJson.sol";
+
+import {console2} from "forge-std/console2.sol";
+import {StdStyle} from "forge-std/StdStyle.sol";
 
 import {IAuth} from "src/auth/IAuth.sol";
-
-// TODO: Not yet tested. Get deployed instance and config.
 
 /**
  * @notice Provides IAuth Integration Tests.
  *
- * @dev These tests are expected to be executed in downstream projects.
- *
- *      To setup integration tests for deployed IAuth instances:
- *
- *      ```solidity
- *      import {IAuthIntegrationTest} from "lib/auth/test/IAuthIntegrationTest.sol"
- *
- *      contract AuthIntegrationTest is IAuthIntegrationTest {
- *          // TODO: Create Configuration struct.
- *          IAuthIntegrationTest.Configuration config = ...:
- *
- *          function setUp() public {
- *              setUp(config);
- *          }
+ * @dev Config Definition:
+ *      ```json
+ *      {
+ *          "legacy": bool,
+ *          "authed": [
+ *              "0x000000000000000000000000000000000000cafe", ...
+ *          ]
  *      }
  *      ```
  */
-abstract contract IAuthIntegrationTest is Test {
-    struct Configuration {
-        /// @dev The auth instance to test.
-        IAuth auth;
-        /// @dev The chain instance from which to fork.
-        Chain chain;
-        /// @dev Whether auth is a legay instance, i.e. does not support
-        ///      `authed(address)(bool)` and `authed()(address[]) functions.
-        bool legacy;
-        /// @dev The list of expected auth'ed addresses.
-        address[] authed;
-    }
+contract IAuthIntegrationTest is Test {
+    using stdJson for string;
 
-    Configuration private config;
+    IAuth auth;
+    string config;
 
-    function setUp(Configuration memory config_) internal {
-        config = config_;
-
-        // Initiate fork.
-        vm.createSelectFork(config.chain.rpcUrl);
-    }
-
-    function test_integration_authed() public {
-        if (config.legacy) return;
-
-        // Every address in config.authed is auth'ed.
-        for (uint i; i < config.authed.length; i++) {
-            assertTrue(config.auth.authed(config.authed[i]));
+    modifier notLegacy() {
+        if (!config.readBool(".legacy")) {
+            _;
         }
+    }
 
-        // Every address returned by auth.authed() is in config.authed.
-        address[] memory authed = config.auth.authed();
-        for (uint i; i < authed.length; i++) {
-            for (uint j; j < config.authed.length; j++) {
-                // Break inner loop if address found.
-                if (authed[i] == config.authed[j]) {
-                    break;
+    constructor(address instance, string memory config_) {
+        auth = IAuth(instance);
+        config = config_;
+    }
+
+    function run() external {
+        // Run set of integration tests.
+        run_authed_containsAllExpectedAddresses();
+        run_authed_onlyExpectedAddressesAreAuthed();
+        run_authed_zeroAddressNotAuthed();
+        run_authed_ownAddressNotAuthed();
+    }
+
+    /// @dev Checks that each address expected to be auth'ed is actually
+    ///      auth'ed.
+    function run_authed_containsAllExpectedAddresses() internal {
+        address[] memory expected = config.readAddressArray(".authed");
+
+        // Check that each expected address is auth'ed.
+        for (uint i; i < expected.length; i++) {
+            // Using `wards(address)(uint)` to support legacy instances.
+            if (auth.wards(expected[i]) != 1) {
+                console2.log(
+                    StdStyle.red("Expected address not auth'ed"), expected[i]
+                );
+                assertTrue(false);
+            }
+        }
+    }
+
+    /// @dev Checks that only addresses specified in the config are actually
+    ///      auth'ed.
+    /// @dev Only non-legacy versions supported!
+    function run_authed_onlyExpectedAddressesAreAuthed() internal notLegacy {
+        address[] memory expected = config.readAddressArray(".authed");
+        address[] memory actual = auth.authed();
+
+        for (uint i; i < actual.length; i++) {
+            for (uint j; j < expected.length; j++) {
+                if (actual[i] == expected[i]) {
+                    break; // Found address. Continue with outer loop.
                 }
 
-                // Fail if address not found.
-                if (j == config.authed.length - 1) {
+                // Fail if unknown address auth'ed.
+                if (j == expected.length - 1) {
+                    console2.log(
+                        StdStyle.red("Unknown address auth'ed"), actual[i]
+                    );
                     assertTrue(false);
                 }
             }
         }
     }
 
-    /// @dev Used for legacy Auth instances only providing the
-    ///      `ward(address)(uint)` function.
-    function test_integration_legacy_authed() public {
-        // Every address in config.authed is auth'ed.
-        for (uint i; i < config.authed.length; i++) {
-            assertEq(config.auth.wards(config.authed[i]), 1);
+    /// @dev Checks that the zero address is not auth'ed.
+    function run_authed_zeroAddressNotAuthed() internal {
+        // Using `wards(address)(uint)` to support legacy instances.
+        if (auth.wards(address(0)) != 0) {
+            console2.log(StdStyle.red("Zero address is auth'ed"));
+            assertTrue(false);
+        }
+    }
+
+    /// @dev Checks that own address is not auth'ed.
+    function run_authed_ownAddressNotAuthed() internal {
+        // Using `wards(address)(uint)` to support legacy instances.
+        if (auth.wards(address(auth)) != 0) {
+            console2.log(StdStyle.red("Own address is auth'ed"));
+            assertTrue(false);
         }
     }
 }
