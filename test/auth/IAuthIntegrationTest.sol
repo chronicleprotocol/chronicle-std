@@ -75,7 +75,7 @@ contract IAuthIntegrationTest is Test {
 
         for (uint i; i < actual.length; i++) {
             for (uint j; j < expected.length; j++) {
-                if (actual[i] == expected[i]) {
+                if (actual[i] == expected[j]) {
                     break; // Found address. Continue with outer loop.
                 }
 
