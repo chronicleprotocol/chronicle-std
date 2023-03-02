@@ -40,7 +40,24 @@ abstract contract Auth is IAuth {
 
     /// @dev Ensures caller is auth'ed.
     modifier auth() {
-        if (_wards[msg.sender] == 0) revert NotAuthorized(msg.sender);
+        /// @solidity memory-safe-assembly
+        assembly {
+            // Compute slot of _wards[msg.sender].
+            mstore(0x00, caller())
+            mstore(0x20, _wards.slot)
+            let slot := keccak256(0x00, 0x40)
+
+            // Revert if not auth'ed.
+            let authed := sload(slot)
+            if iszero(authed) {
+                // Store selector of `NotAuthorized(address)`.
+                mstore(0x00, 0x4a0bfec1)
+                // Store msg.sender.
+                mstore(0x20, caller())
+                // Revert with (offset, size).
+                revert(0x1c, 0x24)
+            }
+        }
         _;
     }
 
