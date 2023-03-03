@@ -14,7 +14,7 @@ import {IAuth} from "./IAuth.sol";
  *      the `rely(address)` and `deny(address)` functions, auth'ed callers are
  *      able to grant/renounce auth to/from addresses.
  *
- *      This module is used throuhg inheritance. It will make available the
+ *      This module is used through inheritance. It will make available the
  *      modifier `auth`, which can be applied to functions to restrict their
  *      use to only auth'ed callers.
  */
