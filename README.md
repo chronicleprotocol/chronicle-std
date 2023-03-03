@@ -6,13 +6,14 @@ The `Chronicle Std Library` provides a set of contracts used throughout the _Chr
 
 ```ml
 auth
-├─ Auth — "Access control module"
+├─ Auth — "`auth` access control module"
 ├─ IAuth — "Auth's interface specification"
+buddy
+├─ Buddy — "`toll` access control module"
+├─ IBuddy — "Buddy's interface specification"
 configurable
 ├─ Configurable — "File pattern module providing value configurability"
 ├─ IConfigurable — "Configurable's interface specification"
-proxy
-├─ TBD — "Proxy module providing logic configurability"
 ```
 
 ## Installation

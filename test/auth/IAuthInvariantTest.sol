@@ -19,6 +19,13 @@ abstract contract IAuthInvariantTest is Test {
         handler = new Handler(auth);
         auth.rely(address(handler));
 
+        bytes4[] memory selectors = new bytes4[](2);
+        selectors[0] = Handler.rely.selector;
+        selectors[1] = Handler.deny.selector;
+
+        targetSelector(
+            FuzzSelector({addr: address(handler), selectors: selectors})
+        );
         targetContract(address(handler));
     }
 
@@ -71,10 +78,9 @@ abstract contract IAuthInvariantTest is Test {
 contract Handler is CommonBase {
     using LibAddressSet for AddressSet;
 
-    IAuth public auth;
+    IAuth public immutable auth;
 
     AddressSet internal _ghost_wardsTouched;
-    address internal _currentWard;
 
     function ghost_wardsTouched() external view returns (address[] memory) {
         return _ghost_wardsTouched.addrs;

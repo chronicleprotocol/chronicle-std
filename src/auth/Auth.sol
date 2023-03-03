@@ -47,9 +47,9 @@ abstract contract Auth is IAuth {
             mstore(0x20, _wards.slot)
             let slot := keccak256(0x00, 0x40)
 
-            // Revert if not auth'ed.
-            let authed := sload(slot)
-            if iszero(authed) {
+            // Revert if caller not auth'ed.
+            let isAuthed := sload(slot)
+            if iszero(isAuthed) {
                 // Store selector of `NotAuthorized(address)`.
                 mstore(0x00, 0x4a0bfec1)
                 // Store msg.sender.
@@ -88,27 +88,22 @@ abstract contract Auth is IAuth {
     }
 
     /// @inheritdoc IAuth
-    function authed(address who) external view override(IAuth) returns (bool) {
+    function authed(address who) public view override(IAuth) returns (bool) {
         return _wards[who] == 1;
     }
 
     /// @inheritdoc IAuth
     /// @custom:invariant Only contains auth'ed addresses.
-    ///                     ∀x ∊ authed(): _wards[x]
+    ///                     ∀x ∊ authed(): _wards[x] == 1
     /// @custom:invariant Contains all auth'ed addresses.
-    ///                     ∀x ∊ _wards[x]: x ∊ authed()
-    function authed()
-        external
-        view
-        override(IAuth)
-        returns (address[] memory)
-    {
+    ///                     ∀x ∊ Address: _wards[x] == 1 → x ∊ authed()
+    function authed() public view override(IAuth) returns (address[] memory) {
         // Initiate array with upper limit length.
         address[] memory wardsList = new address[](_wardsTouched.length);
 
         // Iterate through all possible wards.
         uint ctr;
-        for (uint i; i < _wardsTouched.length; i++) {
+        for (uint i; i < wardsList.length; i++) {
             // Add address only if still ward.
             if (_wards[_wardsTouched[i]] == 1) {
                 wardsList[ctr++] = _wardsTouched[i];

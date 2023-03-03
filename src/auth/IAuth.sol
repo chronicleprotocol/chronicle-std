@@ -28,7 +28,7 @@ interface IAuth {
 
     /// @notice Returns whether address `who` is auth'ed.
     /// @param who The address to check.
-    /// @return True if `who` is auth'ed.
+    /// @return True if `who` is auth'ed, false otherwise.
     function authed(address who) external view returns (bool);
 
     /// @notice Returns full list of addresses granted auth.
@@ -36,8 +36,9 @@ interface IAuth {
     /// @return List of addresses granted auth.
     function authed() external view returns (address[] memory);
 
-    /// @notice Whether given address is auth'ed.
+    /// @notice Returns whether address `who` is auth'ed.
     /// @custom:deprecated Use `authed(address)(bool)` instead.
-    /// @return 1 if address is auth'ed, 0 otherwise.
+    /// @param who The address to check.
+    /// @return 1 if `who` is auth'ed, 0 otherwise.
     function wards(address who) external view returns (uint);
 }
