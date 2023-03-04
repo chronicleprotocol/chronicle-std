@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.8.4;
 
-import {Test} from "forge-std/Test.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 import {StdStyle} from "forge-std/StdStyle.sol";
 import {console2} from "forge-std/console2.sol";
 
-import {IChaincheckTest} from "src/chaincheck/IChaincheckTest.sol";
+import {ChaincheckTest} from "src/chaincheck/ChaincheckTest.sol";
 
 import {IToll} from "src/toll/IToll.sol";
 
@@ -25,7 +24,7 @@ import {IToll} from "src/toll/IToll.sol";
  *      }
  *      ```
  */
-contract ITollChaincheckTest is IChaincheckTest, Test {
+contract ITollChaincheckTest is ChaincheckTest {
     using stdJson for string;
 
     IToll private toll;
@@ -41,18 +40,18 @@ contract ITollChaincheckTest is IChaincheckTest, Test {
 
     function setUp(address self, string memory config_)
         external
-        override(IChaincheckTest)
-        returns (IChaincheckTest)
+        override(ChaincheckTest)
+        returns (ChaincheckTest)
     {
         toll = IToll(self);
         config = config_;
 
-        return IChaincheckTest(address(this));
+        return ChaincheckTest(address(this));
     }
 
     function run()
         external
-        override(IChaincheckTest)
+        override(ChaincheckTest)
         returns (bool, string[] memory)
     {
         // Run set of integration tests.

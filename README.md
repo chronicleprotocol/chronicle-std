@@ -15,7 +15,7 @@ configurable
 ├─ Configurable — "File pattern module providing value configurability"
 ├─ IConfigurable — "Configurable's interface specification"
 chaincheck
-├─ IChaincheckTest — "`chaincheck` integration test interface specification"
+├─ ChaincheckTest — "`chaincheck` integration test specification"
 ```
 
 ## Installation

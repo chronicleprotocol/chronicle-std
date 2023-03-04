@@ -61,7 +61,7 @@ abstract contract ITollInvariantTest is Test {
         }
     }
 
-    function invariant_bud_imageIsZeroOne() public {
+    function invariant_buds_imageIsZeroOne() public {
         address[] memory budsTouched = handler.ghost_budsTouched();
 
         for (uint i; i < budsTouched.length; i++) {
