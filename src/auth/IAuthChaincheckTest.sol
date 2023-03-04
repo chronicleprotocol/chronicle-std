@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.16;
 
 import {stdJson} from "forge-std/StdJson.sol";
 import {StdStyle} from "forge-std/StdStyle.sol";
@@ -99,7 +99,8 @@ contract IAuthChaincheckTest is ChaincheckTest {
                 if (j == expected.length - 1) {
                     _logs.push(
                         string.concat(
-                            StdStyle.red("Unknown address auth'ed: "), vm.toString(actual[i])
+                            StdStyle.red("Unknown address auth'ed: "),
+                            vm.toString(actual[i])
                         )
                     );
                 }
