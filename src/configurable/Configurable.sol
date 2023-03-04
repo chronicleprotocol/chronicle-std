@@ -10,22 +10,18 @@ import {IConfigurable} from "./IConfigurable.sol";
  *      `file(bytes32,bytes)` function to configure files.
  *
  *      A contract inheriting from `Configurable` is said to be _configurable_.
- *
- *      The function SHOULD be overriden in the downstream contract.
- *
- *      The function MUST fail with `InvalidFile(bytes32)` if given file
- *      is not configurable and `InvalidValueFiled(bytes32,bytes)` if given
- *      value is invalid for given file.
- *
- *      The function MUST emit the `Filed(address,bytes32,bytes)` event.
- *
- *      A contract inheriting from `Configurable` SHOULD only be configurable
- *      via the provided `file(bytes32,bytes)` function.
  */
 abstract contract Configurable is IConfigurable {
     /// @inheritdoc IConfigurable
     ///
     /// @dev Must be overriden in dowmstream contract.
+    /// @dev Must fail with `InvalidFile(bytes32)` if given file is not
+    ///      configurable.
+    /// @dev Must fail with `InvalidValueFiled(bytes32,bytes)` if given value
+    ///      is invalid for given file.
+    /// @dev Must emit the `Filed(address,bytes32,bytes)` event if file
+    ///      mutated.
+    /// @dev Contract should only be configurable via this function.
     ///
     /// @custom:example Example using custom formatting.
     /// ```solidity
