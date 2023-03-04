@@ -31,11 +31,11 @@ abstract contract Auth is IAuth {
     ///                     ∀x ∊ Address: preTx(_wards[x]) != postTx(_wards[x]) → _wards[msg.sender] = 1
     mapping(address => uint) private _wards;
 
-    /// @dev List of addresses possibly being a ward.
+    /// @dev List of addresses possibly being auth'ed.
     /// @dev May contain duplicates.
-    /// @dev May contain addresses not being ward anymore.
-    /// @custom:invariant Every address being a ward once is element of the list.
-    ///                     ∀x ∊ Address: _wards[x] -> x ∊ _wardsTouched
+    /// @dev May contain addresses not being auth'ed anymore.
+    /// @custom:invariant Every address being auth'ed once is element of the list.
+    ///                     ∀x ∊ Address: authed(x) -> x ∊ _wardsTouched
     address[] private _wardsTouched;
 
     /// @dev Ensures caller is auth'ed.
@@ -101,16 +101,16 @@ abstract contract Auth is IAuth {
         // Initiate array with upper limit length.
         address[] memory wardsList = new address[](_wardsTouched.length);
 
-        // Iterate through all possible wards.
+        // Iterate through all possible auth'ed addresses.
         uint ctr;
         for (uint i; i < wardsList.length; i++) {
-            // Add address only if still ward.
+            // Add address only if still auth'ed.
             if (_wards[_wardsTouched[i]] == 1) {
                 wardsList[ctr++] = _wardsTouched[i];
             }
         }
 
-        // Set length of array to number of wards actually included.
+        // Set length of array to number of auth'ed addresses actually included.
         /// @solidity memory-safe-assembly
         assembly {
             mstore(wardsList, ctr)

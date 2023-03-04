@@ -57,8 +57,5 @@ abstract contract Configurable is IConfigurable {
     function file(bytes32 file_, bytes calldata /*value*/ )
         external
         virtual
-        override(IConfigurable)
-    {
-        revert InvalidFile(file_);
-    }
+        override(IConfigurable);
 }

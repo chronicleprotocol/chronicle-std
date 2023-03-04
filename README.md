@@ -8,12 +8,14 @@ The `Chronicle Std Library` provides a set of contracts used throughout the _Chr
 auth
 ├─ Auth — "`auth` access control module"
 ├─ IAuth — "Auth's interface specification"
-buddy
-├─ Buddy — "`toll` access control module"
-├─ IBuddy — "Buddy's interface specification"
+toll
+├─ Toll — "`toll` access control module"
+├─ IToll — "Toll's interface specification"
 configurable
 ├─ Configurable — "File pattern module providing value configurability"
 ├─ IConfigurable — "Configurable's interface specification"
+chaincheck
+├─ IChaincheckTest — "`chaincheck` integration test interface specification"
 ```
 
 ## Installation
