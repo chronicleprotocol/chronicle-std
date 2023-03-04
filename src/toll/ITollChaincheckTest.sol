@@ -7,22 +7,23 @@ import {console2} from "forge-std/console2.sol";
 
 import {ChaincheckTest} from "src/chaincheck/ChaincheckTest.sol";
 
-import {IToll} from "src/toll/IToll.sol";
+import {IToll} from "./IToll.sol";
 
 /**
  * @notice IToll's `chaincheck` Integration Test
  *
  * @dev Config Definition:
- *      ```json
- *      {
- *          "IToll": {
- *              "legacy": bool,
- *              "tolled": [
- *                  "0x000000000000000000000000000000000000cafe", ...
- *              ]
- *          }
- *      }
- *      ```
+ * ```json
+ * {
+ *     "IToll": {
+ *         "legacy": bool,
+ *         "tolled": [
+ *             "0x000000000000000000000000000000000000cafe",
+ *             ...
+ *         ]
+ *     }
+ * }
+ * ```
  */
 contract ITollChaincheckTest is ChaincheckTest {
     using stdJson for string;
@@ -54,25 +55,29 @@ contract ITollChaincheckTest is ChaincheckTest {
         override(ChaincheckTest)
         returns (bool, string[] memory)
     {
-        // Run set of integration tests.
-        run_tolled_containsAllExpectedAddresses();
-        run_tolled_onlyExpectedAddressesAreTolled();
-        run_tolled_zeroAddressNotTolled();
-        run_tolled_ownAddressNotTolled();
+        check_tolled_containsAllExpectedAddresses();
+        check_tolled_onlyExpectedAddressesAreTolled();
+        check_tolled_zeroAddressNotTolled();
+        check_tolled_ownAddressNotTolled();
 
         // Fail run if non-zero number of logs.
         return (_logs.length == 0, _logs);
     }
 
     /// @dev Checks that each address expected to be tolled is actually tolled.
-    function run_tolled_containsAllExpectedAddresses() internal {
+    function check_tolled_containsAllExpectedAddresses() internal {
         address[] memory expected = config.readAddressArray(".IToll.tolled");
 
         // Check that each expected address is tolled.
         for (uint i; i < expected.length; i++) {
             // Using `bud(address)(uint)` to support legacy instances.
             if (toll.bud(expected[i]) != 1) {
-                _logs.push(StdStyle.red("Expected address not tolled"));
+                _logs.push(
+                    string.concat(
+                        StdStyle.red("Expected address not tolled: "),
+                        vm.toString(expected[i])
+                    )
+                );
             }
         }
     }
@@ -81,7 +86,7 @@ contract ITollChaincheckTest is ChaincheckTest {
     ///      tolled.
     /// @dev Only non-legacy versions supported.
 
-    function run_tolled_onlyExpectedAddressesAreTolled() internal notLegacy {
+    function check_tolled_onlyExpectedAddressesAreTolled() internal notLegacy {
         address[] memory expected = config.readAddressArray(".IToll.tolled");
         address[] memory actual = toll.tolled();
 
@@ -93,25 +98,30 @@ contract ITollChaincheckTest is ChaincheckTest {
 
                 // Log if unknown address tolled.
                 if (j == expected.length - 1) {
-                    _logs.push(StdStyle.red("Unknown address tolled"));
+                    _logs.push(
+                        string.concat(
+                            StdStyle.red("Unknown address tolled: "),
+                            vm.toString(actual[i])
+                        )
+                    );
                 }
             }
         }
     }
 
     /// @dev Checks that the zero address is not tolled.
-    function run_tolled_zeroAddressNotTolled() internal {
+    function check_tolled_zeroAddressNotTolled() internal {
         // Using `bud(address)(uint)` to support legacy instances.
         if (toll.bud(address(0)) != 0) {
-            _logs.push(StdStyle.red("Zero address is tolled"));
+            _logs.push(StdStyle.red("Zero address tolled"));
         }
     }
 
     /// @dev Checks that own address is not tolled.
-    function run_tolled_ownAddressNotTolled() internal {
+    function check_tolled_ownAddressNotTolled() internal {
         // Using `bud(address)(uint)` to support legacy instances.
         if (toll.bud(address(toll)) != 0) {
-            _logs.push(StdStyle.red("Own address is tolled"));
+            _logs.push(StdStyle.red("Own address tolled"));
         }
     }
 }
