@@ -25,7 +25,7 @@ import {IConfigurable} from "./IConfigurable.sol";
 abstract contract Configurable is IConfigurable {
     /// @inheritdoc IConfigurable
     ///
-    /// @dev Should be overriden in dowmstream contract.
+    /// @dev Must be overriden in dowmstream contract.
     ///
     /// @custom:example Example using custom formatting.
     /// ```solidity

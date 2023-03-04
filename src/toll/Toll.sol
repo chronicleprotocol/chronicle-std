@@ -52,7 +52,8 @@ abstract contract Toll is IToll {
         _;
     }
 
-    /// @dev MUST be implemented in downstream contract.
+    /// @dev Reverts if caller not allowed to access protected function.
+    /// @dev Must be implemented in downstream contract.
     function toll_auth() internal virtual;
 
     /// @inheritdoc IToll

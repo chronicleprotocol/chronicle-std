@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import {Test} from "forge-std/Test.sol";
 
 /**
- * @title IChaincheckTest
+ * @title ChaincheckTest
  *
  * @custom:example Running a ChaincheckTest.
  * ```solidity
