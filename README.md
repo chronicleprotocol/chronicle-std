@@ -1,4 +1,4 @@
-# Chronicle Std Library • [![Unit Tests](https://github.com/chronicleprotocol/chronicle-std/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/chronicleprotocol/chronicle-std/actions/workflows/unit-tests.yml) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+# Chronicle Std Library • [![Unit Tests](https://github.com/chronicleprotocol/chronicle-std/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/chronicleprotocol/chronicle-std/actions/workflows/unit-tests.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 The `Chronicle Std Library` provides a set of contracts used throughout the _Chronicle Protocol_.
 
