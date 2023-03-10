@@ -14,16 +14,15 @@ import {IConfigurable} from "./IConfigurable.sol";
 abstract contract Configurable is IConfigurable {
     /// @inheritdoc IConfigurable
     ///
-    /// @dev Must be overriden in dowmstream contract.
-    /// @dev Must fail with `InvalidFile(bytes32)` if given file is not
+    /// @dev Must be overriden in downstream contract.
+    /// @dev Must fail with `InvalidFile(bytes32)` if given file not
     ///      configurable.
     /// @dev Must fail with `InvalidValueFiled(bytes32,bytes)` if given value
-    ///      is invalid for given file.
+    ///      invalid for given file.
     /// @dev Must emit the `Filed(address,bytes32,bytes)` event if file
     ///      mutated.
-    /// @dev Contract should only be configurable via this function.
     ///
-    /// @custom:example Example using custom formatting.
+    /// @custom:example Example with simple dispatching and decoding.
     /// ```solidity
     /// function file(bytes32 file_, bytes calldata value) external auth {
     ///     // forgefmt: disable-start

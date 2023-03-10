@@ -8,11 +8,10 @@ import {Test} from "forge-std/Test.sol";
  *
  * @notice Verifiable onchain configurations
  *
- * @dev The `ChaincheckTest` module specifies how contracts have to implement
- *      their integration tests.
- *      TODO ^^ Better docs.
+ * @dev The `ChaincheckTest` module specifies how contracts must implement
+ *      their integration tests in order to be executable via `chaincheck`.
  *
- * @custom:example Running a ChaincheckTest.
+ * @custom:example Running a ChaincheckTest contract.
  * ```solidity
  * import {ChainlogChaincheckTest} from "...";
  * function test() public {

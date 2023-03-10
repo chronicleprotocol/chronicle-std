@@ -85,7 +85,6 @@ contract ITollChaincheckTest is ChaincheckTest {
     /// @dev Checks that only addresses specified in the config are actually
     ///      tolled.
     /// @dev Only non-legacy versions supported.
-
     function check_tolled_onlyExpectedAddressesAreTolled() internal notLegacy {
         address[] memory expected = config.readAddressArray(".IToll.tolled");
         address[] memory actual = toll.tolled();
