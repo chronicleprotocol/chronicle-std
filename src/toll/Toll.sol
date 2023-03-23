@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 
 import {IToll} from "./IToll.sol";
@@ -8,7 +8,18 @@ import {IToll} from "./IToll.sol";
  *
  * @notice "Toll paid, we kiss - but dissension looms, maybe diss?"
  *
- * @dev ...
+ * @dev The `Toll` contract module provides a basic access control mechanism,
+ *      where a set of addresses are granted access to protected functions.
+ *      These addresses are said the be _tolled_.
+ *
+ *      Initially, no address is tolled. Through the `kiss(address)` and
+ *      `diss(address)` functions, auth'ed callers are able to toll/de-toll
+ *      addresses. Authentication for these functions is defined via the
+ *      downstream implemented `toll_auth()` function.
+ *
+ *      This module is used through inheritance. It will make available the
+ *      modifier `toll`, which can be applied to functions to restrict their
+ *      use to only tolled callers.
  */
 abstract contract Toll is IToll {
     /// @dev Mapping storing whether address is tolled.
@@ -31,8 +42,7 @@ abstract contract Toll is IToll {
 
     /// @dev Ensures caller is tolled.
     modifier toll() {
-        /// @solidity memory-safe-assembly
-        assembly {
+        assembly ("memory-safe") {
             // Compute slot of _buds[msg.sender].
             mstore(0x00, caller())
             mstore(0x20, _buds.slot)
@@ -57,7 +67,7 @@ abstract contract Toll is IToll {
     function toll_auth() internal virtual;
 
     /// @inheritdoc IToll
-    function kiss(address who) external override(IToll) {
+    function kiss(address who) external {
         toll_auth();
 
         if (_buds[who] == 1) return;
@@ -68,7 +78,7 @@ abstract contract Toll is IToll {
     }
 
     /// @inheritdoc IToll
-    function diss(address who) external override(IToll) {
+    function diss(address who) external {
         toll_auth();
 
         if (_buds[who] == 0) return;
@@ -78,7 +88,7 @@ abstract contract Toll is IToll {
     }
 
     /// @inheritdoc IToll
-    function tolled(address who) public view override(IToll) returns (bool) {
+    function tolled(address who) public view returns (bool) {
         return _buds[who] == 1;
     }
 
@@ -87,7 +97,7 @@ abstract contract Toll is IToll {
     ///                     ∀x ∊ tolled(): _tolled[x]
     /// @custom:invariant Contains all tolled addresses.
     ///                     ∀x ∊ Address: _tolled[x] == 1 → x ∊ tolled()
-    function tolled() public view override(IToll) returns (address[] memory) {
+    function tolled() public view returns (address[] memory) {
         // Initiate array with upper limit length.
         address[] memory budsList = new address[](_budsTouched.length);
 
@@ -101,8 +111,7 @@ abstract contract Toll is IToll {
         }
 
         // Set length of array to number of tolled addresses actually included.
-        /// @solidity memory-safe-assembly
-        assembly {
+        assembly ("memory-safe") {
             mstore(budsList, ctr)
         }
 
@@ -110,7 +119,7 @@ abstract contract Toll is IToll {
     }
 
     /// @inheritdoc IToll
-    function bud(address who) public view override(IToll) returns (uint) {
+    function bud(address who) public view returns (uint) {
         return _buds[who];
     }
 }

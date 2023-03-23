@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 
 import {IAuth} from "./IAuth.sol";
@@ -40,8 +40,7 @@ abstract contract Auth is IAuth {
 
     /// @dev Ensures caller is auth'ed.
     modifier auth() {
-        /// @solidity memory-safe-assembly
-        assembly {
+        assembly ("memory-safe") {
             // Compute slot of _wards[msg.sender].
             mstore(0x00, caller())
             mstore(0x20, _wards.slot)
@@ -71,7 +70,7 @@ abstract contract Auth is IAuth {
     }
 
     /// @inheritdoc IAuth
-    function rely(address who) external override(IAuth) auth {
+    function rely(address who) external auth {
         if (_wards[who] == 1) return;
 
         _wards[who] = 1;
@@ -80,7 +79,7 @@ abstract contract Auth is IAuth {
     }
 
     /// @inheritdoc IAuth
-    function deny(address who) external override(IAuth) auth {
+    function deny(address who) external auth {
         if (_wards[who] == 0) return;
 
         _wards[who] = 0;
@@ -88,7 +87,7 @@ abstract contract Auth is IAuth {
     }
 
     /// @inheritdoc IAuth
-    function authed(address who) public view override(IAuth) returns (bool) {
+    function authed(address who) public view returns (bool) {
         return _wards[who] == 1;
     }
 
@@ -97,7 +96,7 @@ abstract contract Auth is IAuth {
     ///                     ∀x ∊ authed(): _wards[x] == 1
     /// @custom:invariant Contains all auth'ed addresses.
     ///                     ∀x ∊ Address: _wards[x] == 1 → x ∊ authed()
-    function authed() public view override(IAuth) returns (address[] memory) {
+    function authed() public view returns (address[] memory) {
         // Initiate array with upper limit length.
         address[] memory wardsList = new address[](_wardsTouched.length);
 
@@ -111,8 +110,7 @@ abstract contract Auth is IAuth {
         }
 
         // Set length of array to number of auth'ed addresses actually included.
-        /// @solidity memory-safe-assembly
-        assembly {
+        assembly ("memory-safe") {
             mstore(wardsList, ctr)
         }
 
@@ -120,7 +118,7 @@ abstract contract Auth is IAuth {
     }
 
     /// @inheritdoc IAuth
-    function wards(address who) public view override(IAuth) returns (uint) {
+    function wards(address who) public view returns (uint) {
         return _wards[who];
     }
 }
