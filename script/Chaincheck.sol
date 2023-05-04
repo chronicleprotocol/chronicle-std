@@ -1,19 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 
-import {Test} from "forge-std/Test.sol";
-
 /**
- * @title ChaincheckTest
+ * @title Chaincheck
  *
  * @notice Verifiable onchain configurations
  *
- * @dev The `ChaincheckTest` module specifies how contracts must implement
- *      their integration tests in order to be executable via `chaincheck`.
+ * @dev The `Chaincheck` module specifies how contracts must implement their
+ *      integration tests in order to be executable via `chaincheck`.
  *
- * @custom:example Running a ChaincheckTest contract.
+ * @custom:example Running a Chaincheck contract.
  * ```solidity
- * import {ChainlogChaincheckTest} from "...";
+ * import {ChainlogChaincheck} from "...";
  * function test() public {
  *     // Instantiate fork environment.
  *     vm.createSelectFork("RPC_URL");
@@ -24,7 +22,7 @@ import {Test} from "forge-std/Test.sol";
  *     // Run chaincheck integration test.
  *     bool ok;
  *     string[] memory logs;
- *     (ok, logs) = ChaincheckTest(new ChainlogChaincheckTest())
+ *     (ok, logs) = Chaincheck(new ChainlogChaincheck())
  *                     .setUp(instance, config)
  *                     .run();
  *     // If run failed, print logs.
@@ -32,11 +30,11 @@ import {Test} from "forge-std/Test.sol";
  * }
  * ```
  */
-abstract contract ChaincheckTest is Test {
+abstract contract Chaincheck {
     function setUp(address self, string memory config)
         external
         virtual
-        returns (ChaincheckTest);
+        returns (Chaincheck);
 
     function run() external virtual returns (bool, string[] memory);
 }
