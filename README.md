@@ -6,6 +6,7 @@ The `Chronicle Std Library` provides a set of contracts used throughout the _Chr
 
 ```ml
 src
+├─ IChronicle - "Interface for Chronicle Protocol's oracle products"
 ├─ auth
 │   ├─ Auth — "`auth` access control module"
 │   └─ IAuth — "Auth's interface specification"
