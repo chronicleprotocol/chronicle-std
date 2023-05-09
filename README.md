@@ -5,17 +5,16 @@ The `Chronicle Std Library` provides a set of contracts used throughout the _Chr
 ## Contracts
 
 ```ml
-auth
-├─ Auth — "`auth` access control module"
-├─ IAuth — "Auth's interface specification"
-toll
-├─ Toll — "`toll` access control module"
-├─ IToll — "Toll's interface specification"
-configurable
-├─ Configurable — "File pattern module providing value configurability"
-├─ IConfigurable — "Configurable's interface specification"
-chaincheck
-├─ ChaincheckTest — "`chaincheck` integration test specification"
+src
+├─ auth
+│   ├─ Auth — "`auth` access control module"
+│   └─ IAuth — "Auth's interface specification"
+└─ toll
+    ├─ Toll — "`toll` access control module"
+    └─ IToll — "Toll's interface specification"
+
+script
+└─ Chaincheck - "Verifiable onchain configurations"
 ```
 
 ## Installation
