@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 
+import {Vm} from "forge-std/Vm.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 import {StdStyle} from "forge-std/StdStyle.sol";
 import {console2} from "forge-std/console2.sol";
 
-import {ChaincheckTest} from "src/chaincheck/ChaincheckTest.sol";
+import {Chaincheck} from "./Chaincheck.sol";
 
-import {IToll} from "./IToll.sol";
+import {IToll} from "src/toll/IToll.sol";
 
 /**
  * @notice IToll's `chaincheck` Integration Test
@@ -25,8 +26,11 @@ import {IToll} from "./IToll.sol";
  * }
  * ```
  */
-contract ITollChaincheckTest is ChaincheckTest {
+contract ITollChaincheck is Chaincheck {
     using stdJson for string;
+
+    Vm internal constant vm =
+        Vm(address(uint160(uint(keccak256("hevm cheat code")))));
 
     IToll private toll;
     string private config;
@@ -41,18 +45,18 @@ contract ITollChaincheckTest is ChaincheckTest {
 
     function setUp(address self, string memory config_)
         external
-        override(ChaincheckTest)
-        returns (ChaincheckTest)
+        override(Chaincheck)
+        returns (Chaincheck)
     {
         toll = IToll(self);
         config = config_;
 
-        return ChaincheckTest(address(this));
+        return Chaincheck(address(this));
     }
 
     function run()
         external
-        override(ChaincheckTest)
+        override(Chaincheck)
         returns (bool, string[] memory)
     {
         check_tolled_containsAllExpectedAddresses();

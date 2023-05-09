@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 
+import {Vm} from "forge-std/Vm.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 import {StdStyle} from "forge-std/StdStyle.sol";
 
-import {ChaincheckTest} from "src/chaincheck/ChaincheckTest.sol";
+import {Chaincheck} from "./Chaincheck.sol";
 
-import {IAuth} from "./IAuth.sol";
+import {IAuth} from "src/auth/IAuth.sol";
 
 /**
  * @notice IAuth's `chaincheck` Integration Test
@@ -24,8 +25,11 @@ import {IAuth} from "./IAuth.sol";
  * }
  * ```
  */
-contract IAuthChaincheckTest is ChaincheckTest {
+contract IAuthChaincheck is Chaincheck {
     using stdJson for string;
+
+    Vm internal constant vm =
+        Vm(address(uint160(uint(keccak256("hevm cheat code")))));
 
     IAuth private auth;
     string private config;
@@ -40,18 +44,18 @@ contract IAuthChaincheckTest is ChaincheckTest {
 
     function setUp(address self, string memory config_)
         external
-        override(ChaincheckTest)
-        returns (ChaincheckTest)
+        override(Chaincheck)
+        returns (Chaincheck)
     {
         auth = IAuth(self);
         config = config_;
 
-        return ChaincheckTest(address(this));
+        return Chaincheck(address(this));
     }
 
     function run()
         external
-        override(ChaincheckTest)
+        override(Chaincheck)
         returns (bool, string[] memory)
     {
         check_authed_containsAllExpectedAddresses();
