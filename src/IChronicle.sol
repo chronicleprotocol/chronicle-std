@@ -11,6 +11,10 @@ interface IChronicle {
     /// @return wat The oracle's identifier.
     function wat() external view returns (bytes32 wat);
 
+    /// @notice Returns the age of the current value.
+    /// @return age The age of the current value.
+    function age() external view returns (uint32 age);
+
     /// @notice Returns the oracle's current value.
     /// @dev Reverts if no value set.
     /// @return value The oracle's current value.
