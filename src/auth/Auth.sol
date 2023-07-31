@@ -10,9 +10,9 @@ import {IAuth} from "./IAuth.sol";
  *      where a set of addresses are granted access to protected functions.
  *      These addresses are said to be _auth'ed_.
  *
- *      Initially, the deployer address is the only address auth'ed. Through
- *      the `rely(address)` and `deny(address)` functions, auth'ed callers are
- *      able to grant/renounce auth to/from addresses.
+ *      Initially, the address given as constructor argument is the only address
+ *      auth'ed. Through the `rely(address)` and `deny(address)` functions,
+ *      auth'ed callers are able to grant/renounce auth to/from addresses.
  *
  *      This module is used through inheritance. It will make available the
  *      modifier `auth`, which can be applied to functions to restrict their
@@ -22,8 +22,8 @@ abstract contract Auth is IAuth {
     /// @dev Mapping storing whether address is auth'ed.
     /// @custom:invariant Image of mapping is {0, 1}.
     ///                     ∀x ∊ Address: _wards[x] ∊ {0, 1}
-    /// @custom:invariant Only deployer address authenticated after deployment.
-    ///                     deployment → (∀x ∊ Address: _wards[x] == 1 → x == msg.sender)
+    /// @custom:invariant Only address given as constructor argument is authenticated after deployment.
+    ///                     deploy(initialAuthed) → (∀x ∊ Address: _wards[x] == 1 → x == initialAuthed)
     /// @custom:invariant Only functions `rely` and `deny` may mutate the mapping's state.
     ///                     ∀x ∊ Address: preTx(_wards[x]) != postTx(_wards[x])
     ///                                     → (msg.sig == "rely" ∨ msg.sig == "deny")
@@ -60,13 +60,13 @@ abstract contract Auth is IAuth {
         _;
     }
 
-    constructor() {
-        _wards[msg.sender] = 1;
-        _wardsTouched.push(msg.sender);
+    constructor(address initialAuthed) {
+        _wards[initialAuthed] = 1;
+        _wardsTouched.push(initialAuthed);
 
-        // Note to use address(0) as caller to keep invariant that no address
-        // can grant itself auth.
-        emit AuthGranted(address(0), msg.sender);
+        // Note to use address(0) as caller to indicate address was auth'ed
+        // during deployment.
+        emit AuthGranted(address(0), initialAuthed);
     }
 
     /// @inheritdoc IAuth

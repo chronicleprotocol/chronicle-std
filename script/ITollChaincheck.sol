@@ -14,17 +14,17 @@ import {IToll} from "src/toll/IToll.sol";
  * @notice IToll's `chaincheck` Integration Test
  *
  * @dev Config Definition:
- * ```json
- * {
- *     "IToll": {
- *         "legacy": bool,
- *         "tolled": [
- *             "0x000000000000000000000000000000000000cafe",
- *             ...
- *         ]
- *     }
- * }
- * ```
+ *      ```json
+ *      {
+ *          "IToll": {
+ *              "legacy": bool,
+ *              "tolled": [
+ *                  "<Ethereum address>",
+ *                  ...
+ *              ]
+ *          }
+ *      }
+ *      ```
  */
 contract ITollChaincheck is Chaincheck {
     using stdJson for string;

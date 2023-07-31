@@ -19,10 +19,10 @@ abstract contract IAuthTest is Test {
     }
 
     function test_deployment() public {
-        // Deployer is auth'ed.
+        // Address given as constructor argument is auth'ed.
         assertTrue(auth.authed(address(this)));
 
-        // Deployer is included in authed list.
+        // Address given as constructor is included in authed list.
         address[] memory authed = auth.authed();
         assertEq(authed.length, 1);
         assertEq(authed[0], address(this));
