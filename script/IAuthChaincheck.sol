@@ -13,17 +13,17 @@ import {IAuth} from "src/auth/IAuth.sol";
  * @notice IAuth's `chaincheck` Integration Test
  *
  * @dev Config Definition:
- * ```json
- * {
- *     "IAuth": {
- *         "legacy": bool,
- *         "authed": [
- *             "0x000000000000000000000000000000000000cafe",
- *             ...
- *         ]
- *     }
- * }
- * ```
+ *      ```json
+ *      {
+ *          "IAuth": {
+ *              "legacy": bool,
+ *              "authed": [
+ *                  "<Ethereum address>",
+ *                  ...
+ *              ]
+ *          }
+ *      }
+ *      ```
  */
 contract IAuthChaincheck is Chaincheck {
     using stdJson for string;
