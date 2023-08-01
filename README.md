@@ -22,7 +22,7 @@ script
 
 Install module via Foundry:
 ```bash
-$ forge install chronicleprotocol/chronicle-std@v0.1
+$ forge install chronicleprotocol/chronicle-std@v2
 ```
 
 ## Contributing
