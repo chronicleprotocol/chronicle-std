@@ -9,7 +9,7 @@ pragma solidity ^0.8.16;
  * @dev The `Chaincheck` module specifies how contracts must implement their
  *      integration tests in order to be executable via `chaincheck`.
  *
- * @custom:example Running a Chaincheck contract.
+ * @custom:example Running a Chaincheck contract:
  *
  *      ```solidity
  *      import {ChainlogChaincheck} from "...";
