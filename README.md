@@ -15,7 +15,9 @@ src
     └─ IToll — "Toll's interface specification"
 
 script
-└─ Chaincheck - "Verifiable onchain configurations"
+├─ Chaincheck - "Verifiable onchain configurations"
+├─ IAuthChaincheck - "Chaincheck implementation for IAuth interface"
+└─ ITollChaincheck - "Chaincheck implementation for IToll interface"
 ```
 
 ## Installation
