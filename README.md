@@ -14,8 +14,8 @@ src
 │   ├─ Toll — "`toll` access control module"
 │   └─ IToll — "Toll's interface specification"
 └─ lead
-    ├─ Leader — "`leader` access control module"
-    └─ ILeader — "Leader's interface specification"
+    ├─ Lead — "`lead` access control module"
+    └─ ILead — "Lead's interface specification"
 ```
 
 ## Installation

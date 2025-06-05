@@ -16,9 +16,9 @@ interface ILead {
     /// @param who The address lead got renounced from.
     event LeadRenounced(address indexed caller, address indexed who);
 
-    /// @notice Grants address `who` lad.
+    /// @notice Grants address `who` lead.
     /// @dev Only callable by auth'ed address.
-    /// @param who The address to grant lad.
+    /// @param who The address to grant lead.
     function hail(address who) external;
 
     /// @notice Renounces address `who`'s lead.
