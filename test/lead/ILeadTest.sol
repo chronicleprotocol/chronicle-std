@@ -74,4 +74,3 @@ abstract contract ILeadTest is Test {
         lead.fear(address(0));
     }
 }
-

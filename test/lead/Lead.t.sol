@@ -24,4 +24,3 @@ contract LeadInvariantTest is ILeadInvariantTest {
         setUp(new LeadInstance(address(this)));
     }
 }
-

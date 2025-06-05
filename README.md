@@ -10,14 +10,12 @@ src
 ├─ auth
 │   ├─ Auth — "`auth` access control module"
 │   └─ IAuth — "Auth's interface specification"
-└─ toll
-    ├─ Toll — "`toll` access control module"
-    └─ IToll — "Toll's interface specification"
-
-script
-├─ Chaincheck - "Verifiable onchain configurations"
-├─ IAuthChaincheck - "Chaincheck implementation for IAuth interface"
-└─ ITollChaincheck - "Chaincheck implementation for IToll interface"
+├─ toll
+│   ├─ Toll — "`toll` access control module"
+│   └─ IToll — "Toll's interface specification"
+└─ lead
+    ├─ Leader — "`leader` access control module"
+    └─ ILeader — "Leader's interface specification"
 ```
 
 ## Installation
