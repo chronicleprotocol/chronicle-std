@@ -60,7 +60,17 @@ abstract contract Auth is IAuth {
         _;
     }
 
+    /// @dev Constructs the initial auth set.
+    ///
+    ///      Reverts if `initialAuthed` is `address(0)`: no transaction can ever
+    ///      have `msg.sender == address(0)`, so auth'ing the zero address would
+    ///      make the `auth` modifier reject every caller and permanently brick
+    ///      the contract. Because `rely` is itself `auth`-gated there would be no
+    ///      recovery path, and the condition is baked into deployed bytecode
+    ///      rather than storage.
     constructor(address initialAuthed) {
+        require(initialAuthed != address(0), "Auth: zero initialAuthed");
+
         _wards[initialAuthed] = 1;
         _wardsTouched.push(initialAuthed);
 
